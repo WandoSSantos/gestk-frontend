@@ -7,12 +7,27 @@
 
 ## 📋 Visão Geral
 
-O **GESTK Frontend** é um sistema completo de gestão contábil desenvolvido em **Next.js 15** com arquitetura **monorepo**. O sistema oferece duas aplicações principais:
+O **GESTK Frontend** é um sistema completo de gestão contábil desenvolvido em **Next.js 15** com arquitetura **monorepo**. O sistema oferece três aplicações principais:
 
+- **Landing**: Página institucional com apresentação do produto e captação de leads
 - **Admin**: Painel administrativo para gestão de contratos, usuários e configurações
 - **Client**: Interface do cliente com módulos de gestão e dashboards analíticos
 
 ## 🚀 Funcionalidades Implementadas
+
+### 🌐 Aplicação Landing (`apps/landing`)
+- ✅ **Página Institucional**: Design moderno e profissional
+- ✅ **Hero Section**: Apresentação impactante com CTAs
+- ✅ **Features**: Recursos principais com ícones e descrições
+- ✅ **Como Funciona**: Processo ETL e migração de dados
+- ✅ **Depoimentos**: Carrossel de feedback de clientes
+- ✅ **FAQ**: Perguntas frequentes organizadas por categoria
+- ✅ **Formulário de Contato**: Integração com backend
+- ✅ **Modo Noturno**: Toggle dark/light com persistência
+- ✅ **Carrossel de Gráficos**: Dashboards interativos do GESTK Admin
+- ✅ **Responsividade**: Design adaptativo para todos os dispositivos
+- ✅ **SEO Otimizado**: Meta tags e estrutura semântica
+- ✅ **Banner de Cookies**: Consentimento LGPD
 
 ### 🏢 Aplicação Admin (`apps/admin`)
 - ✅ **Gestão de Contratos**: CRUD completo de contratos
@@ -57,6 +72,7 @@ O **GESTK Frontend** é um sistema completo de gestão contábil desenvolvido em
 ```
 gestk-frontend/
 ├── apps/
+│   ├── landing/        # Página institucional
 │   ├── admin/          # Aplicação administrativa
 │   └── client/         # Aplicação do cliente
 ├── packages/
@@ -120,6 +136,9 @@ cp apps/client/.env.example apps/client/.env.local
 # Desenvolvimento (todas as aplicações)
 npm run dev
 
+# Apenas landing
+npm run dev:landing
+
 # Apenas admin
 npm run dev:admin
 
@@ -128,6 +147,7 @@ npm run dev:client
 ```
 
 ### URLs de Desenvolvimento
+- **Landing**: http://localhost:3002
 - **Admin**: http://localhost:3000
 - **Client**: http://localhost:3001
 
@@ -154,6 +174,7 @@ npm run dev:client
 ### Desenvolvimento
 ```bash
 npm run dev              # Executa todas as aplicações
+npm run dev:landing      # Apenas aplicação landing
 npm run dev:admin        # Apenas aplicação admin
 npm run dev:client       # Apenas aplicação client
 ```
@@ -161,6 +182,7 @@ npm run dev:client       # Apenas aplicação client
 ### Build
 ```bash
 npm run build            # Build de todas as aplicações
+npm run build:landing    # Build apenas landing
 npm run build:admin      # Build apenas admin
 npm run build:client     # Build apenas client
 ```

@@ -2,13 +2,14 @@
 
 ## 📋 Visão Geral
 
-O **GESTK Frontend** é um sistema completo de gestão contábil desenvolvido com **Next.js 15** e arquitetura **monorepo**, utilizando **Turborepo** para gerenciamento de builds e cache. O sistema oferece duas aplicações principais com funcionalidades específicas para diferentes tipos de usuários.
+O **GESTK Frontend** é um sistema completo de gestão contábil desenvolvido com **Next.js 15** e arquitetura **monorepo**, utilizando **Turborepo** para gerenciamento de builds e cache. O sistema oferece três aplicações principais com funcionalidades específicas para diferentes tipos de usuários.
 
 ## 🏗️ Estrutura do Monorepo
 
 ```
 gestk-frontend/
 ├── apps/
+│   ├── landing/        # Página institucional (Apresentação e captação de leads)
 │   ├── admin/          # Aplicação administrativa (Gestão de contratos, usuários, billing)
 │   └── client/         # Aplicação do cliente (Gestão e Dashboards)
 ├── packages/
@@ -20,6 +21,22 @@ gestk-frontend/
 ```
 
 ## 🎯 Aplicações
+
+### Landing (`apps/landing`)
+**Página institucional para apresentação e captação de leads**
+
+- **Página Institucional**: Design moderno e profissional
+- **Hero Section**: Apresentação impactante com CTAs
+- **Features**: Recursos principais com ícones e descrições
+- **Como Funciona**: Processo ETL e migração de dados
+- **Depoimentos**: Carrossel de feedback de clientes
+- **FAQ**: Perguntas frequentes organizadas por categoria
+- **Formulário de Contato**: Integração com backend
+- **Modo Noturno**: Toggle dark/light com persistência
+- **Carrossel de Gráficos**: Dashboards interativos do GESTK Admin
+- **Responsividade**: Design adaptativo para todos os dispositivos
+- **SEO Otimizado**: Meta tags e estrutura semântica
+- **Banner de Cookies**: Consentimento LGPD
 
 ### Admin (`apps/admin`)
 **Painel administrativo para gestão do sistema**
@@ -363,11 +380,13 @@ export const queryClient = new QueryClient({
 ```bash
 # Desenvolvimento
 npm run dev              # Todas as aplicações
+npm run dev:landing      # Apenas landing
 npm run dev:admin        # Apenas admin
 npm run dev:client       # Apenas client
 
 # Build
 npm run build            # Build de produção
+npm run build:landing    # Build apenas landing
 npm run build:admin      # Build apenas admin
 npm run build:client     # Build apenas client
 
