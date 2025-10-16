@@ -1,3 +1,5 @@
 {
-  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js"
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
+  "/(dashboard)/simuladores/irpf/page": "app/(dashboard)/simuladores/irpf/page.js",
+  "/page": "app/page.js"
 }
