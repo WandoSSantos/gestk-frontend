@@ -10,6 +10,7 @@ Este documento fornece um guia completo para desenvolvedores que trabalham no pr
 ```
 gestk-frontend/
 ├── apps/
+│   ├── landing/        # Página institucional
 │   ├── admin/          # Aplicação administrativa
 │   └── client/         # Aplicação do cliente
 ├── packages/
@@ -20,6 +21,7 @@ gestk-frontend/
 ```
 
 ### Aplicações
+- **Landing**: Página institucional com apresentação e captação de leads
 - **Admin**: Gestão de contratos, usuários, billing e configurações
 - **Client**: Módulos de gestão e dashboards analíticos
 
@@ -62,6 +64,7 @@ npm install
 3. **Configuração de variáveis de ambiente**
 ```bash
 # Copiar arquivos de exemplo
+cp apps/landing/.env.example apps/landing/.env.local
 cp apps/admin/.env.example apps/admin/.env.local
 cp apps/client/.env.example apps/client/.env.local
 
@@ -73,6 +76,9 @@ cp apps/client/.env.example apps/client/.env.local
 # Todas as aplicações
 npm run dev
 
+# Apenas landing
+npm run dev:landing
+
 # Apenas admin
 npm run dev:admin
 
@@ -81,6 +87,42 @@ npm run dev:client
 ```
 
 ## 📁 Estrutura de Pastas
+
+### Aplicação Landing (`apps/landing`)
+```
+apps/landing/
+├── src/
+│   ├── app/                    # App Router (Next.js 15)
+│   │   ├── login/             # Redirecionamentos de login
+│   │   │   ├── admin/         # Redireciona para admin
+│   │   │   └── cliente/       # Redireciona para cliente
+│   │   ├── globals.css        # Estilos globais e modo noturno
+│   │   ├── layout.tsx         # Layout raiz com providers
+│   │   └── page.tsx           # Página principal
+│   ├── components/            # Componentes específicos
+│   │   ├── landing/           # Componentes da landing page
+│   │   │   ├── Navbar.tsx     # Navegação principal
+│   │   │   ├── Hero.tsx       # Seção hero
+│   │   │   ├── Features.tsx   # Recursos principais
+│   │   │   ├── HowItWorks.tsx # Processo ETL
+│   │   │   ├── Pricing.tsx    # Formulário de orçamento
+│   │   │   ├── Testimonials.tsx # Depoimentos
+│   │   │   ├── FAQ.tsx        # Perguntas frequentes
+│   │   │   ├── Contact.tsx    # Formulário de contato
+│   │   │   ├── Footer.tsx     # Rodapé
+│   │   │   ├── CookieBanner.tsx # Banner de cookies
+│   │   │   └── AdminDashboardCarousel.tsx # Carrossel de gráficos
+│   │   ├── providers/         # Providers de contexto
+│   │   │   ├── QueryProvider.tsx # React Query
+│   │   │   └── ThemeProvider.tsx # Modo noturno
+│   │   └── ui/                # Componentes reutilizáveis
+│   ├── lib/                   # Utilitários e configurações
+│   │   ├── api/               # API de contato
+│   │   └── utils.ts           # Utilitários gerais
+│   └── types/                 # Tipos TypeScript
+├── public/                    # Arquivos estáticos
+└── package.json
+```
 
 ### Aplicação Admin (`apps/admin`)
 ```
@@ -351,11 +393,13 @@ export const Card: React.FC<CardProps> = ({ children, className = '' }) => {
 ```bash
 # Desenvolvimento
 npm run dev              # Todas as aplicações
+npm run dev:landing      # Apenas landing
 npm run dev:admin        # Apenas admin
 npm run dev:client       # Apenas client
 
 # Build
 npm run build            # Build de produção
+npm run build:landing    # Build apenas landing
 npm run build:admin      # Build apenas admin
 npm run build:client     # Build apenas client
 

@@ -1,3 +1,17 @@
 {
-  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js"
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
+  "/(dashboard)/dashboards/contabil/page": "app/(dashboard)/dashboards/contabil/page.js",
+  "/(dashboard)/dashboards/demografico/page": "app/(dashboard)/dashboards/demografico/page.js",
+  "/(dashboard)/dashboards/dre/page": "app/(dashboard)/dashboards/dre/page.js",
+  "/(dashboard)/dashboards/fiscal/page": "app/(dashboard)/dashboards/fiscal/page.js",
+  "/(dashboard)/dashboards/indicadores/page": "app/(dashboard)/dashboards/indicadores/page.js",
+  "/(dashboard)/gestao/carteira/page": "app/(dashboard)/gestao/carteira/page.js",
+  "/(dashboard)/gestao/clientes/page": "app/(dashboard)/gestao/clientes/page.js",
+  "/(dashboard)/gestao/escritorio/page": "app/(dashboard)/gestao/escritorio/page.js",
+  "/(dashboard)/gestao/usuarios/page": "app/(dashboard)/gestao/usuarios/page.js",
+  "/(dashboard)/relatorios/page": "app/(dashboard)/relatorios/page.js",
+  "/(dashboard)/simuladores/inss/page": "app/(dashboard)/simuladores/inss/page.js",
+  "/(dashboard)/simuladores/irpf/page": "app/(dashboard)/simuladores/irpf/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/page": "app/page.js"
 }
