@@ -26,3 +26,4 @@ export async function sendContactForm(data: ContactFormData): Promise<ContactRes
     }
   }
 }
+

@@ -365,3 +365,4 @@ NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
 ---
 
 **Landing Page GESTK** - Desenvolvida com ❤️ para maximizar conversões e apresentar o melhor do sistema de gestão contábil.
+

@@ -304,3 +304,4 @@ export function Contact() {
     </section>
   )
 }
+
