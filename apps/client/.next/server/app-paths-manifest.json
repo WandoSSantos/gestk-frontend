@@ -1,5 +1,7 @@
 {
   "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
+  "/(dashboard)/gestao/carteira/page": "app/(dashboard)/gestao/carteira/page.js",
+  "/(dashboard)/simuladores/inss/page": "app/(dashboard)/simuladores/inss/page.js",
   "/(dashboard)/simuladores/irpf/page": "app/(dashboard)/simuladores/irpf/page.js",
   "/page": "app/page.js"
 }

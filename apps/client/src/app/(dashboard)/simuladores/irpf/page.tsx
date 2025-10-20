@@ -92,6 +92,9 @@ export default function SimuladorIRPFPage() {
     // Desconto simplificado
     const descontoSimplificado = 607.20 // R$ 607,20
 
+    // Teto máximo INSS 2025
+    const tetoINSS = 8157.41 
+
     let deducoes = 0
     let baseCalculo = 0
     let aliquota = 0
@@ -118,6 +121,10 @@ export default function SimuladorIRPFPage() {
         aliquota = 14
         valorINSS = rendaMensal * 0.14 - 190.40 // R$ 190,40
       }
+
+      else {
+        valorINSS = tetoINSS * 0.14 // teto máximo INSS 2025
+      }
     }
 
     else if (seguradoPlanos.includes(tipoSegurado)) {
@@ -134,22 +141,23 @@ export default function SimuladorIRPFPage() {
 
         case "plano normal":
           aliquota = 20
-          valorINSS = rendaMensal >= 8157.41 ? 1631.48 : rendaMensal * 0.20
+          valorINSS = rendaMensal >= tetoINSS ? 1631.48 : rendaMensal * 0.20
           break
 
         case "contribuição obrigatória":
           aliquota = 1.3
-          valorINSS = rendaMensal >= 8157.41 ? 1631.48 : rendaMensal * 0.013
+          valorINSS = rendaMensal * 0.013 > (tetoINSS * 0.20) ? 1631.48 : rendaMensal * 0.013
           break
 
         case "contribuição optativa":
           aliquota = 20
-          valorINSS = rendaMensal >= 8157.41 ? 1631.48 : rendaMensal * 0.20
+          valorINSS = rendaMensal >= tetoINSS ? 1631.48 : rendaMensal * 0.20
           break
 
         case "contribuição complementar":
           aliquota = 20
-          valorINSS = rendaMensal >= 8157.41 ? 1631.48 : rendaMensal * 0.20
+          valorINSS = rendaMensal >= tetoINSS ? 1631.48 : rendaMensal * 0.20
+          break
       }
     }
 
