@@ -1,4 +1,4 @@
-import { Button } from "@gestk/ui";
+import { Button, Logo } from "@gestk/ui";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@gestk/ui";
 import { 
   BarChart3, 
@@ -24,16 +24,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Shield className="h-7 w-7 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  GESTK
-                  <span className="gradient-text ml-2">Client</span>
-                </h1>
-                <p className="text-xs text-gray-500">Sistema de Gestão Contábil</p>
-              </div>
+              <Logo size="lg" className="hover:scale-105 transition-transform duration-200" />
             </div>
             
             <div className="hidden md:flex items-center space-x-4">
