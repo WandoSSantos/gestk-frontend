@@ -1,6 +1,12 @@
 {
   "app": {
-    "[project]/apps/client/src/app/(dashboard)/dashboard/page": [
+    "[project]/gestk-frontend/apps/client/src/app/(dashboard)/dashboard/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/gestk-frontend/apps/client/src/app/(dashboard)/simuladores/inss/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/gestk-frontend/apps/client/src/app/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ]
   },
