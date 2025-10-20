@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { Logo } from '@gestk/ui'
 import { 
-  Shield, 
   Mail, 
   Phone, 
   MapPin,
@@ -79,9 +79,11 @@ export function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-1">
             <div className="flex items-center space-x-2 mb-6">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary-600 to-primary-700 rounded-lg flex items-center justify-center">
-                <Shield className="w-5 h-5 text-white" />
-              </div>
+              <Logo 
+                variant="white" 
+                size="sm" 
+                className="transition-transform hover:scale-105"
+              />
               <span className="text-2xl font-bold">GESTK</span>
             </div>
             

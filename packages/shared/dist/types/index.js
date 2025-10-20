@@ -1,3 +1,4 @@
 // ===== TIPOS BASE =====
-export {};
+// ===== EXPORTS DOS MÓDULOS ADMIN =====
+export * from './admin';
 //# sourceMappingURL=index.js.map

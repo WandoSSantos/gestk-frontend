@@ -1,4 +1,4 @@
-import { apiClient } from '../client';
+﻿import { apiClient } from '../client';
 import {
   Cliente,
   ClientePayload,
@@ -10,7 +10,7 @@ import {
 } from '../types';
 
 export class ClientService {
-  // ===== GESTÃO - CARTEIRA DE CLIENTES =====
+  // ===== GESTÃƒO - CARTEIRA DE CLIENTES =====
   async getCarteiraClientes(filters?: ClienteFilters): Promise<PaginatedResponse<Cliente>> {
     return apiClient.get('/api/gestao/carteira/clientes/', { params: filters });
   }
@@ -33,7 +33,7 @@ export class ClientService {
     return apiClient.get('/api/gestao/carteira/clientes/resumo/');
   }
 
-  // ===== GESTÃO - CLIENTES =====
+  // ===== GESTÃƒO - CLIENTES =====
   async getClientes(filters?: ClienteFilters): Promise<PaginatedResponse<Cliente>> {
     return apiClient.get('/api/gestao/clientes/lista/', { params: filters });
   }
@@ -57,7 +57,7 @@ export class ClientService {
     return apiClient.get('/api/gestao/clientes/lista/resumo/');
   }
 
-  // ===== GESTÃO - USUÁRIOS =====
+  // ===== GESTÃƒO - USUÃRIOS =====
   async getUsuarios(filters?: any): Promise<PaginatedResponse<any>> {
     return apiClient.get('/api/gestao/usuarios/lista/', { params: filters });
   }
@@ -80,7 +80,7 @@ export class ClientService {
     return apiClient.get('/api/gestao/usuarios/lista/resumo/');
   }
 
-  // ===== GESTÃO - ESCRITÓRIO =====
+  // ===== GESTÃƒO - ESCRITÃ“RIO =====
   async getEscritorio(): Promise<{
     id: string;
     nome: string;
@@ -115,17 +115,17 @@ export class ClientService {
 
   // ===== DASHBOARDS =====
   
-  // Dashboard Demográfico
+  // Dashboard DemogrÃ¡fico
   async getDashboardDemografico(filters?: DashboardFilters): Promise<DashboardData> {
-    return apiClient.get('/api/dashboards/demografico/', { params: filters });
+    return apiClient.get('/dashboards/demografico/', { params: filters });
   }
 
   async getDashboardDemograficoCharts(filters?: DashboardFilters): Promise<ChartData> {
-    return apiClient.get('/api/dashboards/demografico/graficos/', { params: filters });
+    return apiClient.get('/dashboards/demografico/graficos/', { params: filters });
   }
 
   async exportDashboardDemografico(filters?: DashboardFilters): Promise<Blob> {
-    const response = await apiClient.get('/api/dashboards/demografico/exportar/', { 
+    const response = await apiClient.get('/dashboards/demografico/exportar/', { 
       params: filters,
       responseType: 'blob'
     });
@@ -134,32 +134,32 @@ export class ClientService {
 
   // Dashboard Fiscal
   async getDashboardFiscal(filters?: DashboardFilters): Promise<DashboardData> {
-    return apiClient.get('/api/dashboards/fiscal/', { params: filters });
+    return apiClient.get('/dashboards/fiscal/', { params: filters });
   }
 
   async getDashboardFiscalCharts(filters?: DashboardFilters): Promise<ChartData> {
-    return apiClient.get('/api/dashboards/fiscal/graficos/', { params: filters });
+    return apiClient.get('/dashboards/fiscal/graficos/', { params: filters });
   }
 
   async exportDashboardFiscal(filters?: DashboardFilters): Promise<Blob> {
-    const response = await apiClient.get('/api/dashboards/fiscal/exportar/', { 
+    const response = await apiClient.get('/dashboards/fiscal/exportar/', { 
       params: filters,
       responseType: 'blob'
     });
     return response;
   }
 
-  // Dashboard Contábil
+  // Dashboard ContÃ¡bil
   async getDashboardContabil(filters?: DashboardFilters): Promise<DashboardData> {
-    return apiClient.get('/api/dashboards/contabil/', { params: filters });
+    return apiClient.get('/dashboards/contabil/', { params: filters });
   }
 
   async getDashboardContabilCharts(filters?: DashboardFilters): Promise<ChartData> {
-    return apiClient.get('/api/dashboards/contabil/graficos/', { params: filters });
+    return apiClient.get('/dashboards/contabil/graficos/', { params: filters });
   }
 
   async exportDashboardContabil(filters?: DashboardFilters): Promise<Blob> {
-    const response = await apiClient.get('/api/dashboards/contabil/exportar/', { 
+    const response = await apiClient.get('/dashboards/contabil/exportar/', { 
       params: filters,
       responseType: 'blob'
     });
@@ -168,15 +168,15 @@ export class ClientService {
 
   // Dashboard de Indicadores
   async getDashboardIndicadores(filters?: DashboardFilters): Promise<DashboardData> {
-    return apiClient.get('/api/dashboards/indicadores/', { params: filters });
+    return apiClient.get('/dashboards/indicadores/', { params: filters });
   }
 
   async getDashboardIndicadoresCharts(filters?: DashboardFilters): Promise<ChartData> {
-    return apiClient.get('/api/dashboards/indicadores/graficos/', { params: filters });
+    return apiClient.get('/dashboards/indicadores/graficos/', { params: filters });
   }
 
   async exportDashboardIndicadores(filters?: DashboardFilters): Promise<Blob> {
-    const response = await apiClient.get('/api/dashboards/indicadores/exportar/', { 
+    const response = await apiClient.get('/dashboards/indicadores/exportar/', { 
       params: filters,
       responseType: 'blob'
     });
@@ -185,22 +185,22 @@ export class ClientService {
 
   // Dashboard DRE
   async getDashboardDRE(filters?: DashboardFilters): Promise<DashboardData> {
-    return apiClient.get('/api/dashboards/dre/', { params: filters });
+    return apiClient.get('/dashboards/dre/', { params: filters });
   }
 
   async getDashboardDRECharts(filters?: DashboardFilters): Promise<ChartData> {
-    return apiClient.get('/api/dashboards/dre/graficos/', { params: filters });
+    return apiClient.get('/dashboards/dre/graficos/', { params: filters });
   }
 
   async exportDashboardDRE(filters?: DashboardFilters): Promise<Blob> {
-    const response = await apiClient.get('/api/dashboards/dre/exportar/', { 
+    const response = await apiClient.get('/dashboards/dre/exportar/', { 
       params: filters,
       responseType: 'blob'
     });
     return response;
   }
 
-  // ===== MÉTODOS AUXILIARES =====
+  // ===== MÃ‰TODOS AUXILIARES =====
   
   // Download de arquivo
   async downloadFile(url: string, filename?: string): Promise<void> {
@@ -219,7 +219,7 @@ export class ClientService {
 
   // Upload de arquivo
   async uploadFile(file: File, onProgress?: (progress: number) => void): Promise<any> {
-    return apiClient.upload('/api/upload/', file, onProgress);
+    return apiClient.upload('/upload/', file, onProgress);
   }
 
   // Obter dados gerais do dashboard
@@ -231,9 +231,14 @@ export class ClientService {
     indicadores_principais: Record<string, number>;
     graficos_principais: ChartData[];
   }> {
-    return apiClient.get('/api/dashboards/overview/');
+    return apiClient.get('/dashboards/overview/');
   }
 }
 
-// Instância singleton
+// InstÃ¢ncia singleton
 export const clientService = new ClientService();
+
+
+
+
+

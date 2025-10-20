@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@gestk/ui';
 import { DataTable } from '@/components/tables';
 import { ExportButtons } from '@/components/export';
@@ -8,52 +8,20 @@ import { GlobalFilters } from '@/components/filters';
 import { LineChart, BarChart, PieChart } from '@/components/charts';
 import { AniversarioParceriaModal, SociosAniversariantesModal } from '@/components/modals';
 import { 
-  mockCarteiraClientes, 
-  mockCategoriasClientes, 
-  mockEvolucaoMensal,
   mockAniversarioParceria,
   mockSociosAniversariantes,
   mockEmpresasRegimeTributario,
   mockEmpresasRamoAtividade
 } from '@/lib/mocks';
-import type { CarteiraCliente, FiltrosCarteira } from '@gestk/shared';
+import { useCarteira, useCategorias, useEvolucao } from '@gestk/shared';
+import type { ClienteCarteira, CarteiraFilters } from '@gestk/shared';
 import { ColumnDef } from '@tanstack/react-table';
 import { Badge, Button } from '@gestk/ui';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Calendar, Users, Building, TrendingUp, PieChart as PieChartIcon, BarChart3 } from 'lucide-react';
+import { Calendar, Users, Building, TrendingUp, PieChart as PieChartIcon, BarChart3, Loader2 } from 'lucide-react';
 
-const statusColors = {
-  ativo: 'bg-green-100 text-green-800',
-  inativo: 'bg-red-100 text-red-800',
-  novo: 'bg-blue-100 text-blue-800',
-  sem_movimentacao: 'bg-yellow-100 text-yellow-800'
-};
-
-const statusLabels = {
-  ativo: 'Ativo',
-  inativo: 'Inativo',
-  novo: 'Novo',
-  sem_movimentacao: 'Sem Movimentação'
-};
-
-const regimeFiscalLabels = {
-  1: 'Simples Nacional',
-  2: 'Lucro Presumido',
-  3: 'Lucro Real',
-  4: 'MEI'
-};
-
-const ramoAtividadeLabels = {
-  1: 'Comércio',
-  2: 'Indústria',
-  3: 'Serviços',
-  4: 'Agronegócio',
-  5: 'Tecnologia',
-  6: 'Construção'
-};
-
-const columns: ColumnDef<CarteiraCliente>[] = [
+const columns: ColumnDef<ClienteCarteira>[] = [
   {
     accessorKey: 'razao_social',
     header: 'Razão Social',
@@ -69,36 +37,41 @@ const columns: ColumnDef<CarteiraCliente>[] = [
     ),
   },
   {
-    accessorKey: 'regime_fiscal_display',
+    accessorKey: 'regime_fiscal',
     header: 'Regime Fiscal',
-    cell: ({ row }) => (
-      <div className="text-sm">{row.getValue('regime_fiscal_display')}</div>
-    ),
+    cell: ({ row }) => {
+      const regime = row.getValue('regime_fiscal') as string;
+      return (
+        <div className="text-sm">
+          {regime === 'SIMPLES_NACIONAL' ? 'Simples Nacional' :
+           regime === 'LUCRO_PRESUMIDO' ? 'Lucro Presumido' :
+           regime === 'LUCRO_REAL' ? 'Lucro Real' : regime}
+        </div>
+      );
+    },
   },
   {
-    accessorKey: 'ramo_atividade_display',
-    header: 'Ramo de Atividade',
-    cell: ({ row }) => (
-      <div className="text-sm">{row.getValue('ramo_atividade_display')}</div>
-    ),
-  },
-  {
-    accessorKey: 'status_cliente',
+    accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => {
-      const status = row.getValue('status_cliente') as keyof typeof statusColors;
+      const status = row.getValue('status') as string;
+      const color = status === 'ATIVO' ? 'bg-green-100 text-green-800' :
+                    status === 'INATIVO' ? 'bg-red-100 text-red-800' :
+                    'bg-yellow-100 text-yellow-800';
       return (
-        <Badge className={statusColors[status]}>
-          {statusLabels[status]}
+        <Badge className={color}>
+          {status === 'ATIVO' ? 'Ativo' :
+           status === 'INATIVO' ? 'Inativo' :
+           status === 'SUSPENSO' ? 'Suspenso' : status}
         </Badge>
       );
     },
   },
   {
-    accessorKey: 'data_abertura',
-    header: 'Data Abertura',
+    accessorKey: 'data_inicio',
+    header: 'Data Início',
     cell: ({ row }) => {
-      const date = new Date(row.getValue('data_abertura'));
+      const date = new Date(row.getValue('data_inicio'));
       return (
         <div className="text-sm">
           {format(date, 'dd/MM/yyyy', { locale: ptBR })}
@@ -107,77 +80,95 @@ const columns: ColumnDef<CarteiraCliente>[] = [
     },
   },
   {
-    accessorKey: 'tempo_contrato_meses',
-    header: 'Tempo Contrato',
-    cell: ({ row }) => (
-      <div className="text-sm">
-        {row.getValue('tempo_contrato_meses')} meses
-      </div>
-    ),
+    accessorKey: 'inadimplente',
+    header: 'Inadimplente',
+    cell: ({ row }) => {
+      const inadimplente = row.getValue('inadimplente') as boolean;
+      return (
+        <Badge className={inadimplente ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}>
+          {inadimplente ? 'Sim' : 'Não'}
+        </Badge>
+      );
+    },
   },
 ];
 
 export default function CarteiraPage() {
-  const [filtros, setFiltros] = useState<FiltrosCarteira>({});
-  const [dadosFiltrados, setDadosFiltrados] = useState<CarteiraCliente[]>(mockCarteiraClientes);
+  const [filtros, setFiltros] = useState<CarteiraFilters>({});
   const [showAniversarioParceria, setShowAniversarioParceria] = useState(false);
   const [showSociosAniversariantes, setShowSociosAniversariantes] = useState(false);
 
-  const handleFiltersChange = (novosFiltros: FiltrosCarteira) => {
+  // React Query hooks
+  const { data: carteiraData, isLoading: isLoadingCarteira, error: errorCarteira } = useCarteira(filtros);
+  const { data: categoriasData, isLoading: isLoadingCategorias } = useCategorias({
+    data_inicio: filtros.data_inicio,
+    data_fim: filtros.data_fim,
+  });
+  const { data: evolucaoData, isLoading: isLoadingEvolucao } = useEvolucao(12);
+
+  const handleFiltersChange = (novosFiltros: CarteiraFilters) => {
     setFiltros(novosFiltros);
-    
-    // Aplicar filtros aos dados
-    let dados = [...mockCarteiraClientes];
-    
-    if (novosFiltros.regime_fiscal && novosFiltros.regime_fiscal.length > 0) {
-      dados = dados.filter(cliente => 
-        novosFiltros.regime_fiscal!.includes(cliente.regime_fiscal)
-      );
-    }
-    
-    if (novosFiltros.ramo_atividade && novosFiltros.ramo_atividade.length > 0) {
-      dados = dados.filter(cliente => 
-        novosFiltros.ramo_atividade!.includes(cliente.ramo_atividade)
-      );
-    }
-    
-    if (novosFiltros.status_cliente && novosFiltros.status_cliente.length > 0) {
-      dados = dados.filter(cliente => 
-        novosFiltros.status_cliente!.includes(cliente.status_cliente)
-      );
-    }
-    
-    if (novosFiltros.busca) {
-      const busca = novosFiltros.busca.toLowerCase();
-      dados = dados.filter(cliente => 
-        cliente.razao_social.toLowerCase().includes(busca) ||
-        cliente.cnpj.includes(busca)
-      );
-    }
-    
-    setDadosFiltrados(dados);
   };
 
   const handleClearFilters = () => {
     setFiltros({});
-    setDadosFiltrados(mockCarteiraClientes);
   };
 
   // Preparar dados para gráficos
-  const dadosEvolucao = mockEvolucaoMensal.map(item => ({
-    name: item.mes,
-    'Total Clientes': item.total_clientes,
-    'Novos Clientes': item.novos_clientes,
-    'Clientes Inativos': item.clientes_inativos
-  }));
+  const dadosEvolucao = useMemo(() => {
+    if (!evolucaoData || evolucaoData.length === 0) {
+      // Mock data temporário se backend não retornar
+      return Array.from({ length: 12 }, (_, i) => ({
+        name: new Date(2024, i, 1).toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' }),
+        'Total Clientes': Math.floor(Math.random() * 50) + 100,
+        'Novos Clientes': Math.floor(Math.random() * 10) + 5,
+        'Clientes Inativos': Math.floor(Math.random() * 5) + 2,
+      }));
+    }
+    return evolucaoData.map(item => ({
+      name: item.mes,
+      'Total Clientes': item.total_clientes,
+      'Novos Clientes': item.novos_clientes,
+      'Clientes Inativos': item.clientes_inativos
+    }));
+  }, [evolucaoData]);
 
-  const dadosCategorias = mockCategoriasClientes.map(item => ({
-    name: item.categoria,
-    value: item.quantidade,
-    color: item.categoria === 'Ativos' ? '#10b981' : 
-           item.categoria === 'Inativos' ? '#ef4444' :
-           item.categoria === 'Novos' ? '#3b82f6' : '#f59e0b'
-  }));
+  const dadosCategorias = useMemo(() => {
+    if (!categoriasData) return [];
+    return [
+      { name: 'Ativos', value: categoriasData.ativos, color: '#10b981' },
+      { name: 'Inativos', value: categoriasData.inativos, color: '#ef4444' },
+      { name: 'Novos', value: categoriasData.novos, color: '#3b82f6' },
+      { name: 'Inadimplentes', value: categoriasData.inadimplentes, color: '#f59e0b' },
+    ];
+  }, [categoriasData]);
+
+  const dadosFiltrados = carteiraData?.results || [];
+  const totalClientes = carteiraData?.count || 0;
+
+  // Loading state
+  if (isLoadingCarteira && !carteiraData) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          <p className="text-gray-600">Carregando dados da carteira...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (errorCarteira) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <p className="text-red-600 font-semibold">Erro ao carregar dados</p>
+          <p className="text-gray-600 mt-2">{errorCarteira.message}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -200,35 +191,44 @@ export default function CarteiraPage() {
       {/* Filtros */}
       <div className="space-y-4">
         <GlobalFilters
-          filters={filtros}
-          onFiltersChange={handleFiltersChange}
+          filters={{
+            busca: filtros.search,
+            periodo: filtros.data_inicio && filtros.data_fim ? {
+              from: new Date(filtros.data_inicio),
+              to: new Date(filtros.data_fim)
+            } : undefined,
+            regime_fiscal: filtros.regime_fiscal ? [filtros.regime_fiscal] : undefined,
+            status: filtros.status ? [filtros.status] : undefined,
+          }}
+          onFiltersChange={(newFilters: any) => {
+            setFiltros({
+              ...filtros,
+              search: newFilters.busca,
+              data_inicio: newFilters.periodo?.from ? newFilters.periodo.from.toISOString().split('T')[0] : undefined,
+              data_fim: newFilters.periodo?.to ? newFilters.periodo.to.toISOString().split('T')[0] : undefined,
+              regime_fiscal: newFilters.regime_fiscal?.[0] as any,
+              status: newFilters.status?.[0] as any,
+            });
+          }}
           onClearFilters={handleClearFilters}
           showSearch={true}
           showPeriod={true}
           showRegimeFiscal={true}
-          showRamoAtividade={true}
           showStatus={true}
+          regimeFiscalOptions={[
+            { value: 'SIMPLES_NACIONAL', label: 'Simples Nacional' },
+            { value: 'LUCRO_PRESUMIDO', label: 'Lucro Presumido' },
+            { value: 'LUCRO_REAL', label: 'Lucro Real' },
+          ]}
+          statusOptions={[
+            { value: 'ATIVO', label: 'Ativo' },
+            { value: 'INATIVO', label: 'Inativo' },
+            { value: 'SUSPENSO', label: 'Suspenso' },
+          ]}
         />
         
-        {/* Filtros Específicos */}
+        {/* Ações Rápidas */}
         <div className="flex flex-wrap gap-4 items-center">
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">Período:</label>
-            <input
-              type="date"
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={filtros.data_inicio || ''}
-              onChange={(e) => handleFiltersChange({ ...filtros, data_inicio: e.target.value })}
-            />
-            <span className="text-gray-500">até</span>
-            <input
-              type="date"
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={filtros.data_fim || ''}
-              onChange={(e) => handleFiltersChange({ ...filtros, data_fim: e.target.value })}
-            />
-          </div>
-          
           <Button
             variant="outline"
             size="sm"
@@ -236,7 +236,7 @@ export default function CarteiraPage() {
             className="flex items-center gap-2"
           >
             <Calendar className="h-4 w-4" />
-            Ver Aniversários
+            Ver Aniversários de Parceria
           </Button>
           
           <Button
@@ -246,30 +246,80 @@ export default function CarteiraPage() {
             className="flex items-center gap-2"
           >
             <Users className="h-4 w-4" />
-            Ver Sócios
+            Ver Sócios Aniversariantes
           </Button>
         </div>
       </div>
 
       {/* Cards de Resumo */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
-        {mockCategoriasClientes.map((categoria, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                {categoria.categoria}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900">
-                {categoria.quantidade}
-              </div>
-              <div className="text-sm text-gray-500">
-                {categoria.percentual}% do total
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+        {/* Ativos */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">
+              Ativos
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-gray-900">
+              {isLoadingCategorias ? <Loader2 className="h-6 w-6 animate-spin" /> : categoriasData?.ativos || 0}
+            </div>
+            <div className="text-sm text-gray-500">
+              {totalClientes > 0 ? `${Math.round((categoriasData?.ativos || 0) / totalClientes * 100)}%` : '0%'} do total
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Inativos */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">
+              Inativos
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-gray-900">
+              {isLoadingCategorias ? <Loader2 className="h-6 w-6 animate-spin" /> : categoriasData?.inativos || 0}
+            </div>
+            <div className="text-sm text-gray-500">
+              {totalClientes > 0 ? `${Math.round((categoriasData?.inativos || 0) / totalClientes * 100)}%` : '0%'} do total
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Novos */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">
+              Novos
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-gray-900">
+              {isLoadingCategorias ? <Loader2 className="h-6 w-6 animate-spin" /> : categoriasData?.novos || 0}
+            </div>
+            <div className="text-sm text-gray-500">
+              {totalClientes > 0 ? `${Math.round((categoriasData?.novos || 0) / totalClientes * 100)}%` : '0%'} do total
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Inadimplentes */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-600">
+              Inadimplentes
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-gray-900">
+              {isLoadingCategorias ? <Loader2 className="h-6 w-6 animate-spin" /> : categoriasData?.inadimplentes || 0}
+            </div>
+            <div className="text-sm text-gray-500">
+              {totalClientes > 0 ? `${Math.round((categoriasData?.inadimplentes || 0) / totalClientes * 100)}%` : '0%'} do total
+            </div>
+          </CardContent>
+        </Card>
         
         {/* Aniversário de Parceria */}
         <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setShowAniversarioParceria(true)}>

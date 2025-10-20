@@ -2,13 +2,13 @@ import { apiClient } from '../client';
 export class AdminService {
     // ===== CONTRATOS GESTK =====
     async getContratos(filters) {
-        return apiClient.get('/api/administracao/contratos-gestk/', { params: filters });
+        return apiClient.get('/api/api/administracao/contratos-gestk/', { params: filters });
     }
     async getContrato(id) {
         return apiClient.get(`/api/administracao/contratos-gestk/${id}/`);
     }
     async createContrato(data) {
-        return apiClient.post('/api/administracao/contratos-gestk/', data);
+        return apiClient.post('/api/api/administracao/contratos-gestk/', data);
     }
     async updateContrato(id, data) {
         return apiClient.put(`/api/administracao/contratos-gestk/${id}/`, data);
@@ -26,17 +26,17 @@ export class AdminService {
         return apiClient.post(`/api/administracao/contratos-gestk/${id}/ativar/`);
     }
     async getContratosResumo() {
-        return apiClient.get('/api/administracao/contratos-gestk/resumo/');
+        return apiClient.get('/api/api/administracao/contratos-gestk/resumo/');
     }
-    // ===== USUÁRIOS DE ACESSO =====
+    // ===== USUÃRIOS DE ACESSO =====
     async getUsuariosAcesso(filters) {
-        return apiClient.get('/api/administracao/usuarios-acesso/', { params: filters });
+        return apiClient.get('/api/api/administracao/usuarios-acesso/', { params: filters });
     }
     async getUsuarioAcesso(id) {
         return apiClient.get(`/api/administracao/usuarios-acesso/${id}/`);
     }
     async createUsuarioAcesso(data) {
-        return apiClient.post('/api/administracao/usuarios-acesso/', data);
+        return apiClient.post('/api/api/administracao/usuarios-acesso/', data);
     }
     async updateUsuarioAcesso(id, data) {
         return apiClient.put(`/api/administracao/usuarios-acesso/${id}/`, data);
@@ -54,11 +54,11 @@ export class AdminService {
         return apiClient.post(`/api/administracao/usuarios-acesso/${id}/estender-vigencia/`, data);
     }
     async getUsuariosAcessoResumo() {
-        return apiClient.get('/api/administracao/usuarios-acesso/resumo/');
+        return apiClient.get('/api/api/administracao/usuarios-acesso/resumo/');
     }
     // ===== CONTABILIDADES ADMIN =====
     async getContabilidadesAdmin(filters) {
-        return apiClient.get('/api/administracao/contabilidades-admin/', { params: filters });
+        return apiClient.get('/api/api/administracao/contabilidades-admin/', { params: filters });
     }
     async getContabilidadeAdmin(id) {
         return apiClient.get(`/api/administracao/contabilidades-admin/${id}/`);
@@ -73,17 +73,17 @@ export class AdminService {
         return apiClient.post(`/api/administracao/contabilidades-admin/${id}/reativar/`);
     }
     async getContabilidadesAdminResumo() {
-        return apiClient.get('/api/administracao/contabilidades-admin/resumo/');
+        return apiClient.get('/api/api/administracao/contabilidades-admin/resumo/');
     }
     // ===== PLANOS =====
     async getPlanos() {
-        return apiClient.get('/api/billing/planos/');
+        return apiClient.get('/api/api/billing/planos/');
     }
     async getPlano(id) {
         return apiClient.get(`/api/billing/planos/${id}/`);
     }
     async createPlano(data) {
-        return apiClient.post('/api/billing/planos/', data);
+        return apiClient.post('/api/api/billing/planos/', data);
     }
     async updatePlano(id, data) {
         return apiClient.put(`/api/billing/planos/${id}/`, data);
@@ -92,20 +92,20 @@ export class AdminService {
         return apiClient.delete(`/api/billing/planos/${id}/`);
     }
     async getPlanosAtivos() {
-        return apiClient.get('/api/billing/planos/ativos/');
+        return apiClient.get('/api/api/billing/planos/ativos/');
     }
     async getPlanosResumo() {
-        return apiClient.get('/api/billing/planos/resumo/');
+        return apiClient.get('/api/api/billing/planos/resumo/');
     }
     // ===== ASSINATURAS =====
     async getAssinaturas() {
-        return apiClient.get('/api/billing/assinaturas/');
+        return apiClient.get('/api/api/billing/assinaturas/');
     }
     async getAssinatura(id) {
         return apiClient.get(`/api/billing/assinaturas/${id}/`);
     }
     async createAssinatura(data) {
-        return apiClient.post('/api/billing/assinaturas/', data);
+        return apiClient.post('/api/api/billing/assinaturas/', data);
     }
     async updateAssinatura(id, data) {
         return apiClient.put(`/api/billing/assinaturas/${id}/`, data);
@@ -123,17 +123,17 @@ export class AdminService {
         return apiClient.post(`/api/billing/assinaturas/${id}/ativar/`);
     }
     async getAssinaturasResumo() {
-        return apiClient.get('/api/billing/assinaturas/resumo/');
+        return apiClient.get('/api/api/billing/assinaturas/resumo/');
     }
     // ===== FATURAS =====
     async getFaturas() {
-        return apiClient.get('/api/billing/faturas/');
+        return apiClient.get('/api/api/billing/faturas/');
     }
     async getFatura(id) {
         return apiClient.get(`/api/billing/faturas/${id}/`);
     }
     async createFatura(data) {
-        return apiClient.post('/api/billing/faturas/', data);
+        return apiClient.post('/api/api/billing/faturas/', data);
     }
     async updateFatura(id, data) {
         return apiClient.put(`/api/billing/faturas/${id}/`, data);
@@ -148,17 +148,17 @@ export class AdminService {
         return apiClient.post(`/api/billing/faturas/${id}/cancelar/`);
     }
     async getFaturasResumo() {
-        return apiClient.get('/api/billing/faturas/resumo/');
+        return apiClient.get('/api/api/billing/faturas/resumo/');
     }
     // ===== PAGAMENTOS =====
     async getPagamentos() {
-        return apiClient.get('/api/billing/pagamentos/');
+        return apiClient.get('/api/api/billing/pagamentos/');
     }
     async getPagamento(id) {
         return apiClient.get(`/api/billing/pagamentos/${id}/`);
     }
     async createPagamento(data) {
-        return apiClient.post('/api/billing/pagamentos/', data);
+        return apiClient.post('/api/api/billing/pagamentos/', data);
     }
     async confirmPagamento(id) {
         return apiClient.post(`/api/billing/pagamentos/${id}/confirmar/`);
@@ -167,9 +167,9 @@ export class AdminService {
         return apiClient.post(`/api/billing/pagamentos/${id}/estornar/`);
     }
     async getPagamentosResumo() {
-        return apiClient.get('/api/billing/pagamentos/resumo/');
+        return apiClient.get('/api/api/billing/pagamentos/resumo/');
     }
 }
-// Instância singleton
+// InstÃ¢ncia singleton
 export const adminService = new AdminService();
 //# sourceMappingURL=admin.service.js.map

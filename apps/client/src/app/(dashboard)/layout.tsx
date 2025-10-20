@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { Logo } from '@gestk/ui';
+import { useAuth } from '@gestk/shared';
 import {
   BarChart3,
   Users,
@@ -27,7 +29,10 @@ import {
   LineChart,
   Target,
   Building,
-  Percent
+  Percent,
+  User,
+  LogOut,
+  ChevronDown
 } from 'lucide-react';
 import { Button } from '@gestk/ui';
 
@@ -147,9 +152,47 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  console.log('🏗️ DashboardLayout - Renderizando...')
+  
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  
   const pathname = usePathname();
+  const router = useRouter();
+  const { isAuthenticated, user, logout } = useAuth();
+
+  console.log('🔐 DashboardLayout - Estado:', { 
+    isAuthenticated, 
+    user: user?.username || 'sem user',
+    pathname 
+  })
+
+  // Fechar menu do usuário ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Handler de logout
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push('/login');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
+  };
+
+  // NOTA: Autenticação é verificada pela página de login
+  // Não fazemos redirect aqui para evitar loops
 
   const toggleMenu = (menuName: string) => {
     setExpandedMenus(prev => 
@@ -175,17 +218,18 @@ export default function DashboardLayout({
       )}>
         <div className="flex h-full flex-col">
           {/* Logo */}
-          <div className="flex h-20 items-center px-6 border-b border-gray-200/50">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Shield className="h-6 w-6 text-white" />
-              </div>
+          <div className="flex h-20 items-center px-4 border-b border-gray-200/50">
+            <div className="flex items-center gap-0.5">
+              <Logo 
+                variant="default" 
+                size="md" 
+                className="transition-transform hover:scale-105"
+              />
               <div>
-                <h1 className="text-xl font-bold text-gray-900">
-                  GESTK
-                  <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent ml-2">Client</span>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  Client
                 </h1>
-                <p className="text-xs text-gray-500">Sistema de Gestão</p>
+                <p className="text-xs text-gray-500 whitespace-nowrap">Sistema de Gestão</p>
               </div>
             </div>
           </div>
@@ -385,11 +429,79 @@ export default function DashboardLayout({
                     <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
                   </div>
                   
-                  <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-medium text-sm">
-                      A
-                    </div>
-                    <span className="text-sm font-medium text-gray-700">admin</span>
+                  {/* User Menu Dropdown */}
+                  <div className="relative" ref={userMenuRef}>
+                    <button
+                      onClick={() => setUserMenuOpen(!userMenuOpen)}
+                      className="flex items-center space-x-2 hover:bg-gray-50 rounded-lg px-3 py-2 transition-colors"
+                    >
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-medium text-sm">
+                        {user?.username?.charAt(0).toUpperCase() || 'U'}
+                      </div>
+                      <div className="hidden md:block text-left">
+                        <span className="text-sm font-medium text-gray-700 block">
+                          {user?.username || 'Usuário'}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {user?.email || ''}
+                        </span>
+                      </div>
+                      <ChevronDown className={cn(
+                        "h-4 w-4 text-gray-500 transition-transform duration-200",
+                        userMenuOpen && "rotate-180"
+                      )} />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {userMenuOpen && (
+                      <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                        {/* User Info */}
+                        <div className="px-4 py-3 border-b border-gray-100">
+                          <p className="text-sm font-medium text-gray-900">
+                            {user?.username || 'Usuário'}
+                          </p>
+                          <p className="text-xs text-gray-500 truncate">
+                            {user?.email || 'email@exemplo.com'}
+                          </p>
+                        </div>
+
+                        {/* Menu Items */}
+                        <div className="py-1">
+                          <button
+                            onClick={() => {
+                              setUserMenuOpen(false);
+                              router.push('/configuracoes/perfil');
+                            }}
+                            className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          >
+                            <User className="h-4 w-4 mr-3 text-gray-500" />
+                            Meu Perfil
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setUserMenuOpen(false);
+                              router.push('/configuracoes');
+                            }}
+                            className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          >
+                            <Settings className="h-4 w-4 mr-3 text-gray-500" />
+                            Configurações
+                          </button>
+                        </div>
+
+                        {/* Logout */}
+                        <div className="border-t border-gray-100 py-1">
+                          <button
+                            onClick={handleLogout}
+                            className="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                          >
+                            <LogOut className="h-4 w-4 mr-3" />
+                            Sair
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

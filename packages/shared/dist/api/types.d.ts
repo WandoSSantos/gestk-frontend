@@ -36,6 +36,7 @@ export interface LoginResponse {
         role: string;
     }>;
 }
+export type AuthTokens = Pick<LoginResponse, 'access' | 'refresh'>;
 export interface RefreshTokenRequest {
     refresh: string;
 }
@@ -51,8 +52,13 @@ export interface User {
     is_active: boolean;
     is_staff: boolean;
     is_superuser: boolean;
+    is_admin: boolean;
     date_joined: string;
     last_login?: string;
+    tipo_usuario?: 'admin' | 'operacional' | 'cliente' | 'superuser';
+    contabilidade?: Contabilidade;
+    modulos_acessiveis?: string[];
+    permissoes?: string[];
 }
 export interface Contabilidade {
     id: string;

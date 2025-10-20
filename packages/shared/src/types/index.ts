@@ -1,5 +1,7 @@
 // ===== TIPOS BASE =====
 
+export type UsuarioTipo = 'superuser' | 'admin' | 'contador' | 'cliente' | 'operacional' | 'readonly'
+
 export interface User {
   id: string
   username: string
@@ -350,3 +352,6 @@ export interface PaginatedResponse<T> {
   limit: number
   totalPages: number
 }
+
+// ===== EXPORTS DOS MÓDULOS ADMIN =====
+export * from './admin'

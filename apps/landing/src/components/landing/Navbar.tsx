@@ -4,15 +4,16 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { useTheme } from '@/components/providers/ThemeProvider'
+import { Logo } from '@gestk/ui'
 import { 
-  Shield, 
   Menu, 
   X, 
   ChevronDown,
   BarChart3,
   Users,
   Sun,
-  Moon
+  Moon,
+  Shield
 } from 'lucide-react'
 
 export function Navbar() {
@@ -56,13 +57,12 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary-600 to-primary-700 rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900 dark:text-white">
-              GESTK
-            </span>
+          <Link href="/" className="flex items-center">
+            <Logo 
+              variant="default" 
+              size="lg" 
+              className="transition-transform hover:scale-105"
+            />
           </Link>
 
           {/* Desktop Navigation */}

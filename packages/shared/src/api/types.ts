@@ -46,6 +46,9 @@ export interface LoginResponse {
   }>;
 }
 
+// Alias para compatibilidade
+export type AuthTokens = Pick<LoginResponse, 'access' | 'refresh'>
+
 export interface RefreshTokenRequest {
   refresh: string;
 }
@@ -64,8 +67,13 @@ export interface User {
   is_active: boolean;
   is_staff: boolean;
   is_superuser: boolean;
+  is_admin: boolean;
   date_joined: string;
   last_login?: string;
+  tipo_usuario?: 'admin' | 'operacional' | 'cliente' | 'superuser';
+  contabilidade?: Contabilidade;
+  modulos_acessiveis?: string[];
+  permissoes?: string[];
 }
 
 // Tipos de contabilidade

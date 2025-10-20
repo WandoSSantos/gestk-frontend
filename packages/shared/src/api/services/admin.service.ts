@@ -1,4 +1,4 @@
-import { apiClient } from '../client';
+﻿import { apiClient } from '../client';
 import {
   Contrato,
   ContratoPayload,
@@ -30,7 +30,7 @@ import {
 export class AdminService {
   // ===== CONTRATOS GESTK =====
   async getContratos(filters?: ContractFilters): Promise<PaginatedResponse<Contrato>> {
-    return apiClient.get('/api/administracao/contratos-gestk/', { params: filters });
+    return apiClient.get('/api/api/administracao/contratos-gestk/', { params: filters });
   }
 
   async getContrato(id: string): Promise<Contrato> {
@@ -38,7 +38,7 @@ export class AdminService {
   }
 
   async createContrato(data: ContratoPayload): Promise<Contrato> {
-    return apiClient.post('/api/administracao/contratos-gestk/', data);
+    return apiClient.post('/api/api/administracao/contratos-gestk/', data);
   }
 
   async updateContrato(id: string, data: Partial<ContratoPayload>): Promise<Contrato> {
@@ -62,12 +62,12 @@ export class AdminService {
   }
 
   async getContratosResumo(): Promise<ResumoContratos> {
-    return apiClient.get('/api/administracao/contratos-gestk/resumo/');
+    return apiClient.get('/api/api/administracao/contratos-gestk/resumo/');
   }
 
-  // ===== USUÁRIOS DE ACESSO =====
+  // ===== USUÃRIOS DE ACESSO =====
   async getUsuariosAcesso(filters?: UsuarioAcessoFilters): Promise<PaginatedResponse<UsuarioAcesso>> {
-    return apiClient.get('/api/administracao/usuarios-acesso/', { params: filters });
+    return apiClient.get('/api/api/administracao/usuarios-acesso/', { params: filters });
   }
 
   async getUsuarioAcesso(id: string): Promise<UsuarioAcesso> {
@@ -75,7 +75,7 @@ export class AdminService {
   }
 
   async createUsuarioAcesso(data: UsuarioAcessoPayload): Promise<UsuarioAcesso> {
-    return apiClient.post('/api/administracao/usuarios-acesso/', data);
+    return apiClient.post('/api/api/administracao/usuarios-acesso/', data);
   }
 
   async updateUsuarioAcesso(id: string, data: Partial<UsuarioAcessoPayload>): Promise<UsuarioAcesso> {
@@ -99,12 +99,12 @@ export class AdminService {
   }
 
   async getUsuariosAcessoResumo(): Promise<ResumoUsuarios> {
-    return apiClient.get('/api/administracao/usuarios-acesso/resumo/');
+    return apiClient.get('/api/api/administracao/usuarios-acesso/resumo/');
   }
 
   // ===== CONTABILIDADES ADMIN =====
   async getContabilidadesAdmin(filters?: ContabilidadeFilters): Promise<PaginatedResponse<Contabilidade>> {
-    return apiClient.get('/api/administracao/contabilidades-admin/', { params: filters });
+    return apiClient.get('/api/api/administracao/contabilidades-admin/', { params: filters });
   }
 
   async getContabilidadeAdmin(id: string): Promise<Contabilidade> {
@@ -124,12 +124,12 @@ export class AdminService {
   }
 
   async getContabilidadesAdminResumo(): Promise<ResumoContabilidades> {
-    return apiClient.get('/api/administracao/contabilidades-admin/resumo/');
+    return apiClient.get('/api/api/administracao/contabilidades-admin/resumo/');
   }
 
   // ===== PLANOS =====
   async getPlanos(): Promise<PaginatedResponse<Plano>> {
-    return apiClient.get('/api/billing/planos/');
+    return apiClient.get('/api/api/billing/planos/');
   }
 
   async getPlano(id: string): Promise<Plano> {
@@ -137,7 +137,7 @@ export class AdminService {
   }
 
   async createPlano(data: PlanoPayload): Promise<Plano> {
-    return apiClient.post('/api/billing/planos/', data);
+    return apiClient.post('/api/api/billing/planos/', data);
   }
 
   async updatePlano(id: string, data: Partial<PlanoPayload>): Promise<Plano> {
@@ -149,16 +149,16 @@ export class AdminService {
   }
 
   async getPlanosAtivos(): Promise<Plano[]> {
-    return apiClient.get('/api/billing/planos/ativos/');
+    return apiClient.get('/api/api/billing/planos/ativos/');
   }
 
   async getPlanosResumo(): Promise<ResumoPlanos> {
-    return apiClient.get('/api/billing/planos/resumo/');
+    return apiClient.get('/api/api/billing/planos/resumo/');
   }
 
   // ===== ASSINATURAS =====
   async getAssinaturas(): Promise<PaginatedResponse<Assinatura>> {
-    return apiClient.get('/api/billing/assinaturas/');
+    return apiClient.get('/api/api/billing/assinaturas/');
   }
 
   async getAssinatura(id: string): Promise<Assinatura> {
@@ -166,7 +166,7 @@ export class AdminService {
   }
 
   async createAssinatura(data: AssinaturaPayload): Promise<Assinatura> {
-    return apiClient.post('/api/billing/assinaturas/', data);
+    return apiClient.post('/api/api/billing/assinaturas/', data);
   }
 
   async updateAssinatura(id: string, data: Partial<AssinaturaPayload>): Promise<Assinatura> {
@@ -190,12 +190,12 @@ export class AdminService {
   }
 
   async getAssinaturasResumo(): Promise<ResumoAssinaturas> {
-    return apiClient.get('/api/billing/assinaturas/resumo/');
+    return apiClient.get('/api/api/billing/assinaturas/resumo/');
   }
 
   // ===== FATURAS =====
   async getFaturas(): Promise<PaginatedResponse<Fatura>> {
-    return apiClient.get('/api/billing/faturas/');
+    return apiClient.get('/api/api/billing/faturas/');
   }
 
   async getFatura(id: string): Promise<Fatura> {
@@ -203,7 +203,7 @@ export class AdminService {
   }
 
   async createFatura(data: FaturaPayload): Promise<Fatura> {
-    return apiClient.post('/api/billing/faturas/', data);
+    return apiClient.post('/api/api/billing/faturas/', data);
   }
 
   async updateFatura(id: string, data: Partial<FaturaPayload>): Promise<Fatura> {
@@ -223,12 +223,12 @@ export class AdminService {
   }
 
   async getFaturasResumo(): Promise<ResumoFaturas> {
-    return apiClient.get('/api/billing/faturas/resumo/');
+    return apiClient.get('/api/api/billing/faturas/resumo/');
   }
 
   // ===== PAGAMENTOS =====
   async getPagamentos(): Promise<PaginatedResponse<Pagamento>> {
-    return apiClient.get('/api/billing/pagamentos/');
+    return apiClient.get('/api/api/billing/pagamentos/');
   }
 
   async getPagamento(id: string): Promise<Pagamento> {
@@ -236,7 +236,7 @@ export class AdminService {
   }
 
   async createPagamento(data: PagamentoPayload): Promise<Pagamento> {
-    return apiClient.post('/api/billing/pagamentos/', data);
+    return apiClient.post('/api/api/billing/pagamentos/', data);
   }
 
   async confirmPagamento(id: string): Promise<Pagamento> {
@@ -248,9 +248,15 @@ export class AdminService {
   }
 
   async getPagamentosResumo(): Promise<ResumoPagamentos> {
-    return apiClient.get('/api/billing/pagamentos/resumo/');
+    return apiClient.get('/api/api/billing/pagamentos/resumo/');
   }
 }
 
-// Instância singleton
+// InstÃ¢ncia singleton
 export const adminService = new AdminService();
+
+
+
+
+
+

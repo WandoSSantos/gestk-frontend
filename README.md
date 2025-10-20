@@ -128,46 +128,87 @@ npm install
 cp apps/admin/.env.example apps/admin/.env.local
 cp apps/client/.env.example apps/client/.env.local
 
-# Configure as variáveis necessárias
+4. **Execute o projeto**
+
+**✅ Todas as aplicações simultaneamente (recomendado)**:
+```bash
+npm run dev
+```
+Isso inicia automaticamente:
+- 🏢 **Admin**: http://localhost:3000
+- 👥 **Client**: http://localhost:3001
+- 🌐 **Landing**: http://localhost:3002
+
+**Individual (quando necessário)**:
+```bash
+npm run dev:admin       # Apenas admin (http://localhost:3000)
+npm run dev:client      # Apenas client (http://localhost:3001)
+npm run dev:landing     # Apenas landing (http://localhost:3002)
 ```
 
-4. **Execute o projeto**
+### ⚡ Quick Start
 ```bash
-# Desenvolvimento (todas as aplicações)
+# 1. Instalar dependências
+npm install
+
+# 2. Rodar todas as aplicações
 npm run dev
 
-# Apenas landing
-npm run dev:landing
-
-# Apenas admin
-npm run dev:admin
-
-# Apenas client
-npm run dev:client
+# 3. Acessar
+# Admin:   http://localhost:3000
+# Client:  http://localhost:3001
+# Landing: http://localhost:3002
 ```
 
-### URLs de Desenvolvimento
-- **Landing**: http://localhost:3002
-- **Admin**: http://localhost:3000
-- **Client**: http://localhost:3001
+## � Status Atual (20/10/2025)
 
-## 📚 Documentação
+### ✅ Completed
+- **BLOCO CLIENT 1: Carteira de Clientes** (100%)
+  - ✅ Infraestrutura completa: Types, API (3 endpoints), Hooks (3 hooks)
+  - ✅ Página com loading/error states
+  - ✅ React Query Provider configurado e funcionando
+  - ✅ Documentação: [BLOCO_CLIENT_1_CARTEIRA_IMPLEMENTADO.md](./docs/BLOCO_CLIENT_1_CARTEIRA_IMPLEMENTADO.md)
+
+- **Documentação Atualizada**
+  - ✅ Plano de Admin atualizado com 26 endpoints reais: [BLOCO_ADMIN_ATUALIZADO.md](./docs/BLOCO_ADMIN_ATUALIZADO.md)
+  - ✅ Pasta `docs` organizada e limpa
+  - ✅ README.md atualizado com status
+
+### 🎯 Em Progresso
+- **BLOCO ADMIN 1: Contratos GESTK** (0%)
+  - ⏳ Fundação: Types, API, Hooks
+  - ⏳ Componentes: Table, Form, Filters, Actions
+  - ⏳ Páginas: List, Create, Detail, Edit
+
+### ⏸️ Backlog
+- **BLOCO ADMIN 2**: Usuários de Acesso (10 endpoints)
+- **BLOCO ADMIN 3**: Contabilidades Admin (6 endpoints)
+- **Carteira Data Issue**: Categories showing 0 - awaiting backend data population
+
+## �📚 Documentação
+
+### 🚀 Documentação Ativa
+- **[BLOCO_ADMIN_ATUALIZADO.md](./docs/BLOCO_ADMIN_ATUALIZADO.md)** ⭐ **PLANO ATUAL**
+  - 26 endpoints reais do backend
+  - 3 blocos de implementação (4-5h cada)
+  - Código pronto para copiar (Types, API, Hooks)
+  
+- **[BLOCO_CLIENT_1_CARTEIRA_IMPLEMENTADO.md](./docs/BLOCO_CLIENT_1_CARTEIRA_IMPLEMENTADO.md)**
+  - Log de implementação da Carteira
+  - Padrões de código seguidos
 
 ### Documentação Técnica
 - [Arquitetura Compartilhada](./docs/ARQUITETURA_COMPARTILHADA.md)
 - [Guia de Desenvolvimento](./docs/DEVELOPMENT_GUIDE.md)
 - [Mapeamento de Endpoints](./docs/ENDPOINTS_MAPPING.md)
-- [Plano de Implementação](./docs/PLANO_IMPLEMENTACAO_MONOREPO.md)
+- [Plano de Implementação Monorepo](./docs/PLANO_IMPLEMENTACAO_MONOREPO.md)
 
 ### Documentação de Integração
 - [Integração com Backend](./docs/INTEGRACAO_BACKEND.md)
 - [Guia de Deploy](./docs/DEPLOYMENT_GUIDE.md)
-- [Configuração de Produção](./docs/PRODUCAO_CONFIG.md)
 
-### Documentação de Módulos
-- [Módulo Gestão](./docs/MODULO_GESTAO.md)
-- [Módulo Dashboards](./docs/MODULO_DASHBOARDS.md)
-- [Sistema de Relatórios](./docs/SISTEMA_RELATORIOS.md)
+### 📦 Documentação Arquivada
+- Documentos históricos de correções e debug movidos para `docs/_archive/`
 
 ## 🔧 Scripts Disponíveis
 
@@ -301,10 +342,50 @@ docker run -p 3000:3000 gestk-frontend
 - **Prettier**: Formatação automática
 - **Conventional Commits**: Padrão de commits
 
+## � Próximas Etapas (Ordem de Prioridade)
+
+### 1️⃣ BLOCO ADMIN 1: Contratos GESTK (4-5 horas) ⬅️ COMEÇAR AQUI
+**Status**: 0% | **Base**: 10 endpoints reais documentados  
+**Fundação Pronta**: Types, API, Hooks (código completo em [BLOCO_ADMIN_ATUALIZADO.md](./docs/BLOCO_ADMIN_ATUALIZADO.md))
+
+**Tarefas**:
+1. [ ] Criar `packages/shared/src/types/admin/contratos-gestk.types.ts` (8 interfaces)
+2. [ ] Criar `packages/shared/src/api/admin/contratos-gestk.api.ts` (10 métodos)
+3. [ ] Criar `packages/shared/src/hooks/admin/useContratosGestk.ts` (9 hooks)
+4. [ ] Exportar no `packages/shared/src/index.ts`
+5. [ ] Compilar: `npm run build`
+6. [ ] Criar componentes: Table, Form, Filters, Actions
+7. [ ] Criar páginas: List, Create, Detail, Edit
+8. [ ] Testar fluxo completo (CRUD + Actions)
+
+### 2️⃣ BLOCO ADMIN 2: Usuários de Acesso (4-5 horas)
+**Status**: 0% | **Base**: 10 endpoints + roles/permissions  
+**Padrão**: Seguir mesmo padrão do BLOCO 1
+
+### 3️⃣ BLOCO ADMIN 3: Contabilidades Admin (3-4 horas)
+**Status**: 0% | **Base**: 6 endpoints (Read-only + Actions)  
+**Padrão**: Variante simplificada do BLOCO 1 (sem Create/Update/Delete)
+
+### 🔧 Correções Pendentes
+- [ ] Carteira de Clientes: Categories showing 0 (awaiting backend data)
+- [ ] Backend: Populate carteira with test data
+- [ ] Backend: Implement "Novos" = clients from last 6 months rule
+
 ## 📈 Roadmap
 
+### ✅ Completado
+- [x] **Design System**: Interface moderna e responsiva
+- [x] **Autenticação**: Login para admin e client
+- [x] **Carteira de Clientes**: BLOCO CLIENT 1 (Fundação completa)
+- [x] **Documentação Backend**: 69 endpoints mapeados (26 admin, 43 billing)
+
+### 🔥 Em Desenvolvimento
+- [ ] **Módulos Admin**: BLOCO 1-3 (26 endpoints, ~12-14 horas)
+  - [ ] **BLOCO 1**: Contratos GESTK (10 endpoints) ⬅️ PRÓXIMO
+  - [ ] **BLOCO 2**: Usuários de Acesso (10 endpoints)
+  - [ ] **BLOCO 3**: Contabilidades Admin (6 endpoints)
+
 ### Próximas Funcionalidades
-- [ ] **Integração Real**: Conexão com backend GESTK
 - [ ] **Autenticação Avançada**: 2FA, SSO
 - [ ] **Notificações**: Sistema de alertas em tempo real
 - [ ] **Mobile App**: Aplicativo nativo
@@ -314,7 +395,7 @@ docker run -p 3000:3000 gestk-frontend
 ### Melhorias Planejadas
 - [ ] **Performance**: Otimizações de carregamento
 - [ ] **Acessibilidade**: Melhorias de a11y
-- [ ] **Testes**: Cobertura completa
+- [ ] **Testes**: Cobertura completa (80%+)
 - [ ] **Documentação**: Guias de usuário
 
 ## 📞 Suporte

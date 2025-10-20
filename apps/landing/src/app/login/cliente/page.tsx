@@ -2,8 +2,9 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Loader2, ArrowLeft, BarChart3 } from 'lucide-react'
+import { Loader2, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Logo } from '@gestk/ui'
 
 export default function ClienteLoginRedirect() {
   const router = useRouter()
@@ -30,8 +31,8 @@ export default function ClienteLoginRedirect() {
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl shadow-2xl p-8 text-center">
           {/* Logo */}
-          <div className="w-16 h-16 bg-gradient-to-br from-success-600 to-success-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <BarChart3 className="w-8 h-8 text-white" />
+          <div className="flex justify-center mb-6">
+            <Logo variant="default" size="lg" />
           </div>
 
           {/* Title */}

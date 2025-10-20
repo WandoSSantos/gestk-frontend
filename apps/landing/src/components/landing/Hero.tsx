@@ -5,7 +5,6 @@ import { AdminDashboardCarousel } from './AdminDashboardCarousel'
 import { 
   ArrowRight, 
   Play, 
-  Shield, 
   BarChart3, 
   Users, 
   Zap,
