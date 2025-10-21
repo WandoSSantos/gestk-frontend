@@ -19,21 +19,61 @@ import type {
 export const gestaoService = {
   // Serviços para Carteira
   carteira: {
+    // Listar clientes da carteira com filtros e paginação
     listar: (filtros: FiltrosCarteira & PaginationParams) =>
       apiClient.get<PaginatedResponse<CarteiraCliente>>('/gestao/carteira/clientes/', {
         params: filtros
       }),
 
+    // Obter detalhes de um cliente específico
+    detalhes: (id: string) =>
+      apiClient.get<ClienteDetalhado>(`/gestao/carteira/clientes/${id}/`),
+
+    // Atualizar dados do cliente
+    atualizar: (id: string, data: Partial<CarteiraCliente>) =>
+      apiClient.put<ClienteDetalhado>(`/gestao/carteira/clientes/${id}/`, data),
+
+    // Resumo e estatísticas da carteira
+    resumo: () =>
+      apiClient.get('/gestao/carteira/resumo/'),
+
+    // Categorias de clientes
     categorias: (filtros?: FiltrosCarteira) =>
       apiClient.get<CategoriaCliente[]>('/gestao/carteira/categorias/', {
         params: filtros
       }),
 
-    evolucao: (periodo: { data_inicio: string; data_fim: string }) =>
+    // Evolução mensal da carteira
+    evolucao: (periodo?: { data_inicio?: string; data_fim?: string; meses?: number }) =>
       apiClient.get<EvolucaoMensal[]>('/gestao/carteira/evolucao/', {
         params: periodo
       }),
 
+    // Aniversários de parceria (data de início do contrato)
+    aniversarios: (meses?: number) =>
+      apiClient.get('/gestao/carteira/aniversarios-parceria/', {
+        params: meses ? { meses } : {}
+      }),
+
+    // Sócios aniversariantes
+    sociosAniversariantes: (meses?: number) =>
+      apiClient.get('/gestao/carteira/socios-aniversariantes/', {
+        params: meses ? { meses } : {}
+      }),
+
+    // Composição societária de um cliente
+    composicaoSocietaria: (clienteId: string) =>
+      apiClient.get(`/gestao/carteira/composicao-societaria/${clienteId}/`),
+
+    // Distribuição por regime tributário
+    regimeTributario: () =>
+      apiClient.get('/gestao/carteira/regime-tributario/'),
+
+    // Distribuição por ramo de atividade
+    ramoAtividade: () =>
+      apiClient.get('/gestao/carteira/ramo-atividade/'),
+
+    // Exportar carteira em diferentes formatos
     exportar: (filtros: FiltrosCarteira, formato: 'pdf' | 'excel' | 'csv') =>
       apiClient.post('/gestao/carteira/exportar/', {
         filtros,

@@ -2,15 +2,39 @@ import { apiClient } from '../client';
 export const gestaoService = {
     // Serviços para Carteira
     carteira: {
+        // Listar clientes da carteira com filtros e paginação
         listar: (filtros) => apiClient.get('/gestao/carteira/clientes/', {
             params: filtros
         }),
+        // Obter detalhes de um cliente específico
+        detalhes: (id) => apiClient.get(`/gestao/carteira/clientes/${id}/`),
+        // Atualizar dados do cliente
+        atualizar: (id, data) => apiClient.put(`/gestao/carteira/clientes/${id}/`, data),
+        // Resumo e estatísticas da carteira
+        resumo: () => apiClient.get('/gestao/carteira/resumo/'),
+        // Categorias de clientes
         categorias: (filtros) => apiClient.get('/gestao/carteira/categorias/', {
             params: filtros
         }),
+        // Evolução mensal da carteira
         evolucao: (periodo) => apiClient.get('/gestao/carteira/evolucao/', {
             params: periodo
         }),
+        // Aniversários de parceria (data de início do contrato)
+        aniversarios: (meses) => apiClient.get('/gestao/carteira/aniversarios-parceria/', {
+            params: meses ? { meses } : {}
+        }),
+        // Sócios aniversariantes
+        sociosAniversariantes: (meses) => apiClient.get('/gestao/carteira/socios-aniversariantes/', {
+            params: meses ? { meses } : {}
+        }),
+        // Composição societária de um cliente
+        composicaoSocietaria: (clienteId) => apiClient.get(`/gestao/carteira/composicao-societaria/${clienteId}/`),
+        // Distribuição por regime tributário
+        regimeTributario: () => apiClient.get('/gestao/carteira/regime-tributario/'),
+        // Distribuição por ramo de atividade
+        ramoAtividade: () => apiClient.get('/gestao/carteira/ramo-atividade/'),
+        // Exportar carteira em diferentes formatos
         exportar: (filtros, formato) => apiClient.post('/gestao/carteira/exportar/', {
             filtros,
             formato

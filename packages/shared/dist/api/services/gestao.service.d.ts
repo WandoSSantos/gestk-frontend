@@ -2,11 +2,20 @@ import type { CarteiraCliente, CategoriaCliente, EvolucaoMensal, ClienteDetalhad
 export declare const gestaoService: {
     carteira: {
         listar: (filtros: FiltrosCarteira & PaginationParams) => Promise<PaginatedResponse<CarteiraCliente>>;
+        detalhes: (id: string) => Promise<ClienteDetalhado>;
+        atualizar: (id: string, data: Partial<CarteiraCliente>) => Promise<ClienteDetalhado>;
+        resumo: () => Promise<any>;
         categorias: (filtros?: FiltrosCarteira) => Promise<CategoriaCliente[]>;
-        evolucao: (periodo: {
-            data_inicio: string;
-            data_fim: string;
+        evolucao: (periodo?: {
+            data_inicio?: string;
+            data_fim?: string;
+            meses?: number;
         }) => Promise<EvolucaoMensal[]>;
+        aniversarios: (meses?: number) => Promise<any>;
+        sociosAniversariantes: (meses?: number) => Promise<any>;
+        composicaoSocietaria: (clienteId: string) => Promise<any>;
+        regimeTributario: () => Promise<any>;
+        ramoAtividade: () => Promise<any>;
         exportar: (filtros: FiltrosCarteira, formato: "pdf" | "excel" | "csv") => Promise<any>;
     };
     clientes: {
