@@ -23,6 +23,8 @@ import { Badge, Button } from '@gestk/ui';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Calendar, Users, Building, TrendingUp, PieChart as PieChartIcon, BarChart3, Loader2 } from 'lucide-react';
+import { useCarteiraResumoQuery} from "../../../../../../../packages/shared/src/queries/carteira/carteiraQuery";
+
 
 const columns: ColumnDef<ClienteCarteira>[] = [
   {
@@ -103,7 +105,7 @@ export default function CarteiraPage() {
 
   // React Query hooks - conectados aos endpoints reais
   const { data: carteiraData, isLoading: isLoadingCarteira, error: errorCarteira } = useCarteiraClientes(filtros as any);
-  const { data: resumoData, isLoading: isLoadingResumo } = useCarteiraResumo();
+  const { data: resumoData, isLoading: isLoadingResumo, error: errorResumo } = useCarteiraResumoQuery();
   const { data: categoriasData, isLoading: isLoadingCategorias } = useCategorias();
   const { data: evolucaoData, isLoading: isLoadingEvolucao } = useCarteiraEvolucao({ meses: 12 });
   const { data: aniversariosData, isLoading: isLoadingAniversarios } = useAniversariosParceria(12);
