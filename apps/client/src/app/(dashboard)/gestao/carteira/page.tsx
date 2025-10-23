@@ -113,6 +113,8 @@ export default function CarteiraPage() {
   const { data: regimeTributarioData, isLoading: isLoadingRegime } = useRegimeTributario();
   const { data: ramoAtividadeData, isLoading: isLoadingRamo } = useRamoAtividade();
 
+  console.log('Resumo Data:', resumoData);
+
   const handleFiltersChange = (novosFiltros: CarteiraFilters) => {
     setFiltros(novosFiltros);
   };
