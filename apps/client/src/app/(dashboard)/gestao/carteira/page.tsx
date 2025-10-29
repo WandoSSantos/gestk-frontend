@@ -24,7 +24,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Calendar, Users, Building, TrendingUp, PieChart as PieChartIcon, BarChart3, Loader2 } from 'lucide-react';
 import { useCarteiraResumoQuery} from "../../../../../../../packages/shared/src/queries/carteira/carteiraQuery";
-
+import { useClientesResumoQuery } from '../../../../../../../packages/shared/src/queries/clientes/clientesQuery';
 
 const columns: ColumnDef<ClienteCarteira>[] = [
   {
@@ -104,8 +104,8 @@ export default function CarteiraPage() {
   const [showSociosAniversariantes, setShowSociosAniversariantes] = useState(false);
 
   // React Query hooks - conectados aos endpoints reais
-  const { data: carteiraData, isLoading: isLoadingCarteira, error: errorCarteira } = useCarteiraClientes(filtros as any);
-  const { data: resumoData, isLoading: isLoadingResumo, error: errorResumo } = useCarteiraResumoQuery();
+  const { data: carteiraData, isLoading: isLoadingClientes, error: errorClientes } = useClientesResumoQuery();// conectado
+  const { data: resumoData, isLoading: isLoadingCarteira, error: errorCarteira} = useCarteiraResumoQuery(); // conectado
   const { data: categoriasData, isLoading: isLoadingCategorias } = useCategorias();
   const { data: evolucaoData, isLoading: isLoadingEvolucao } = useCarteiraEvolucao({ meses: 12 });
   const { data: aniversariosData, isLoading: isLoadingAniversarios } = useAniversariosParceria(12);
@@ -296,7 +296,7 @@ export default function CarteiraPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-900">
-              {isLoadingResumo ? <Loader2 className="h-6 w-6 animate-spin" /> : contagensCategorias.ativos}
+              {isLoadingCarteira ? <Loader2 className="h-6 w-6 animate-spin" /> : contagensCategorias.ativos}
             </div>
             <div className="text-sm text-gray-500">
               {carteiraData?.count && carteiraData.count > 0 ? `${Math.round(contagensCategorias.ativos / carteiraData.count * 100)}%` : '0%'} do total
@@ -313,7 +313,7 @@ export default function CarteiraPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-900">
-              {isLoadingResumo ? <Loader2 className="h-6 w-6 animate-spin" /> : contagensCategorias.inativos}
+              {isLoadingCarteira ? <Loader2 className="h-6 w-6 animate-spin" /> : contagensCategorias.inativos}
             </div>
             <div className="text-sm text-gray-500">
               {carteiraData?.count && carteiraData.count > 0 ? `${Math.round(contagensCategorias.inativos / carteiraData.count * 100)}%` : '0%'} do total
@@ -330,7 +330,7 @@ export default function CarteiraPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-900">
-              {isLoadingResumo ? <Loader2 className="h-6 w-6 animate-spin" /> : contagensCategorias.novos}
+              {isLoadingCarteira ? <Loader2 className="h-6 w-6 animate-spin" /> : contagensCategorias.novos}
             </div>
             <div className="text-sm text-gray-500">
               {carteiraData?.count && carteiraData.count > 0 ? `${Math.round(contagensCategorias.novos / carteiraData.count * 100)}%` : '0%'} do total
@@ -347,7 +347,7 @@ export default function CarteiraPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-900">
-              {isLoadingResumo ? <Loader2 className="h-6 w-6 animate-spin" /> : contagensCategorias.inadimplentes}
+              {isLoadingCarteira ? <Loader2 className="h-6 w-6 animate-spin" /> : contagensCategorias.inadimplentes}
             </div>
             <div className="text-sm text-gray-500">
               {carteiraData?.count && carteiraData.count > 0 ? `${Math.round(contagensCategorias.inadimplentes / carteiraData.count * 100)}%` : '0%'} do total
